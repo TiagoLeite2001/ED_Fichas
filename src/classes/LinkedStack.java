@@ -4,17 +4,20 @@
  * and open the template in the editor.
  */
 package classes;
+
 import interfaces.StackADT;
 import exceptions.EmptyCollectionException;
+
 /**
  *
  * @author tiago
  */
-public class LinkedStack<T> implements StackADT<T>{
+public class LinkedStack<T> implements StackADT<T> {
+
     private int count;
     private LinearNode<T> top;
-    
-    public LinkedStack(){
+
+    public LinkedStack() {
         this.count = 0;
         this.top = null;
     }
@@ -22,9 +25,9 @@ public class LinkedStack<T> implements StackADT<T>{
     @Override
     public void push(T element) {
         LinearNode<T> newElem = new LinearNode<>(element);
-        if(count == 0){
+        if (count == 0) {
             this.top = newElem;
-        } else{
+        } else {
             newElem.setNext(top);
             this.top = newElem;
         }
@@ -33,27 +36,31 @@ public class LinkedStack<T> implements StackADT<T>{
 
     @Override
     public T pop() throws EmptyCollectionException {
-        if (isEmpty())
+        if (isEmpty()) {
             throw new EmptyCollectionException("Stack is empty!");
-        
+        }
+
         T result = top.getElement();
         this.top = top.getNext();
         count--;
-        
+
         return result;
     }
 
     @Override
     public T peek() throws EmptyCollectionException {
-        if (isEmpty())
+        if (isEmpty()) {
             throw new EmptyCollectionException("Stack");
-        
+        }
+
         return top.getElement();
     }
 
     @Override
     public boolean isEmpty() {
-        if(count == 0) return true;
+        if (count == 0) {
+            return true;
+        }
         return false;
     }
 
@@ -65,22 +72,20 @@ public class LinkedStack<T> implements StackADT<T>{
     @Override
     public String toString() {
         String s = "";
-        
-        
-        if(this.count == 0) System.out.println("List is empty!");
-        
-        LinearNode<T> current = this.top; 
-        
-        while(current != null){
+
+        if (this.count == 0) {
+            System.out.println("List is empty!");
+        }
+
+        LinearNode<T> current = this.top;
+
+        while (current != null) {
             s += current.getElement().toString() + " |";
             current = current.getNext();
         }
-                    
+
         return s;
-        
+
     }
-    
-    
- 
-    
+
 }
