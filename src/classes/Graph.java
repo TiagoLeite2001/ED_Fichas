@@ -8,6 +8,8 @@ package classes;
 import exceptions.ElementNotFoundException;
 import exceptions.EmptyCollectionException;
 import interfaces.GraphADT;
+import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +50,7 @@ public class Graph<T> implements GraphADT<T> {
         try {
             addEdge(getIndex(vertex1), getIndex(vertex2));
         } catch (ElementNotFoundException ex) {
+            System.out.println("Element does not exists");
         }
     }
 
@@ -136,8 +139,8 @@ public class Graph<T> implements GraphADT<T> {
     public Iterator<T> iteratorDFS(int startIndex) throws EmptyCollectionException {
         Integer x;
         boolean found;
-        LinkedStack<Integer> traversalStack = new LinkedStack<Integer>();
-        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<T>();
+        LinkedStack<Integer> traversalStack = new LinkedStack<>();
+        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<>();
         boolean[] visited = new boolean[numVertices];
         if (!indexIsValid(startIndex)) {
             return resultList.iterator();
@@ -146,7 +149,7 @@ public class Graph<T> implements GraphADT<T> {
             visited[i] = false;
         }
 
-        traversalStack.push(new Integer(startIndex));
+        traversalStack.push(startIndex);
         resultList.addToRear(vertices[startIndex]);
         visited[startIndex] = true;
         while (!traversalStack.isEmpty()) {
@@ -158,7 +161,7 @@ public class Graph<T> implements GraphADT<T> {
              */
             for (int i = 0; (i < numVertices) && !found; i++) {
                 if (adjMatrix[x.intValue()][i] && !visited[i]) {
-                    traversalStack.push(new Integer(i));
+                    traversalStack.push(i);
                     resultList.addToRear(vertices[i]);
                     visited[i] = true;
                     found = true;
@@ -180,8 +183,8 @@ public class Graph<T> implements GraphADT<T> {
      */
     public Iterator<T> iteratorBFS(int startIndex) throws EmptyCollectionException {
         Integer x;
-        LinkedQueue<Integer> traversalQueue = new LinkedQueue<Integer>();
-        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<T>();
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        ArrayUnorderedList<T> resultList = new ArrayUnorderedList<>();
         if (!indexIsValid(startIndex)) {
             return resultList.iterator();
         }
@@ -190,7 +193,7 @@ public class Graph<T> implements GraphADT<T> {
             visited[i] = false;
         }
 
-        traversalQueue.enqueue(new Integer(startIndex));
+        traversalQueue.enqueue(startIndex);
         visited[startIndex] = true;
         while (!traversalQueue.isEmpty()) {
             x = traversalQueue.dequeue();
@@ -200,7 +203,7 @@ public class Graph<T> implements GraphADT<T> {
              */
             for (int i = 0; i < numVertices; i++) {
                 if (adjMatrix[x.intValue()][i] && !visited[i]) {
-                    traversalQueue.enqueue(new Integer(i));
+                    traversalQueue.enqueue(i);
                     visited[i] = true;
                 }
             }
@@ -257,13 +260,13 @@ public class Graph<T> implements GraphADT<T> {
             for(int j=0; j<numVertices; j++){
                 if(!adjMatrix[i][j]){
                     if(cont == numVertices){
-                        return true;
+                        return false;
                     }
                     cont++;
                 }
             }
         }
-        return false;
+        return true;
 
     }
 
