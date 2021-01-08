@@ -8,8 +8,6 @@ package ficha2;
 import classes.DoubleLinkedList;
 import exceptions.ElementNotFoundException;
 import exceptions.EmptyCollectionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

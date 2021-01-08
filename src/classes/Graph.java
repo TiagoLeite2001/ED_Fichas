@@ -82,8 +82,8 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     /**
-     * Adds a vertex to the graph, expanding the capacity of the graph if
-     * necessary. It also associates an object with the vertex.
+     * Adds a vertex to the graph, expanding the capacity of the graph if necessary.
+     * It also associates an object with the vertex.
      *
      * @param vertex the vertex to add to the graph
      */
@@ -127,8 +127,8 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     /**
-     * Returns an iterator that performs a depth first search traversal starting
-     * at the given index.
+     * Returns an iterator that performs a depth first search traversal starting at
+     * the given index.
      *
      * @param startIndex the index to begin the search traversal from
      * @return an iterator that performs a depth first traversal
@@ -153,8 +153,8 @@ public class Graph<T> implements GraphADT<T> {
             x = traversalStack.peek();
             found = false;
             /**
-             * Find a vertex adjacent to x that has not been visited and push it
-             * on the stack
+             * Find a vertex adjacent to x that has not been visited and push it on the
+             * stack
              */
             for (int i = 0; (i < numVertices) && !found; i++) {
                 if (adjMatrix[x.intValue()][i] && !visited[i]) {
@@ -172,8 +172,8 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     /**
-     * Returns an iterator that performs a breadth first search traversal
-     * starting at the given index.
+     * Returns an iterator that performs a breadth first search traversal starting
+     * at the given index.
      *
      * @param startIndex the index to begin the search from
      * @return an iterator that performs a breadth first traversal
@@ -196,8 +196,7 @@ public class Graph<T> implements GraphADT<T> {
             x = traversalQueue.dequeue();
             resultList.addToRear(vertices[x.intValue()]);
             /**
-             * Find all vertices adjacent to x that have not been visited and
-             * queue them up
+             * Find all vertices adjacent to x that have not been visited and queue them up
              */
             for (int i = 0; i < numVertices; i++) {
                 if (adjMatrix[x.intValue()][i] && !visited[i]) {
@@ -210,8 +209,9 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     @Override
-    public Iterator iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException {
+        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+                                                                       // Tools | Templates.
     }
 
     @Override
@@ -231,6 +231,7 @@ public class Graph<T> implements GraphADT<T> {
         for (int i = index; i < this.numVertices; i++) {
             this.vertices[i] = this.vertices[i + 1];
         }
+        this.numVertices--;
     }
 
     @Override
@@ -251,7 +252,19 @@ public class Graph<T> implements GraphADT<T> {
 
     @Override
     public boolean isConnected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int cont = 0;
+        for(int i=0; i<numVertices; i++){
+            for(int j=0; j<numVertices; j++){
+                if(!adjMatrix[i][j]){
+                    if(cont == numVertices){
+                        return true;
+                    }
+                    cont++;
+                }
+            }
+        }
+        return false;
+
     }
 
     @Override
@@ -265,8 +278,7 @@ public class Graph<T> implements GraphADT<T> {
         try {
             i = getIndex(startVertex);
             return iteratorBFS(i);
-        } catch (ElementNotFoundException ex) {
-        }
+        } catch (ElementNotFoundException ex) {   }
         return null;
     }
 
