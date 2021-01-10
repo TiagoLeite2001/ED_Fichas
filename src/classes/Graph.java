@@ -8,6 +8,8 @@ package classes;
 import exceptions.ElementNotFoundException;
 import exceptions.EmptyCollectionException;
 import interfaces.GraphADT;
+
+
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,12 +99,19 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     protected void expandCapacity() {
-        T[] newVertices = (T[]) (new Object[vertices.length * 2]);
+        T[] newVertices = (T[]) (new Object[vertices.length*2]);
+        boolean newMatrixAdj[][] = new boolean[vertices.length * 2][vertices.length * 2];
+        
+        for(int i=0; i<numVertices; i++){
+            for(int j=0; j<numVertices; j++){
+                newMatrixAdj[i][j] = adjMatrix[i][j];
+            }
+        }
+        this.adjMatrix=newMatrixAdj;
 
         for (int i = 0; i < numVertices; i++) {
             newVertices[i] = vertices[i];
         }
-
         this.vertices = newVertices;
     }
 
@@ -238,6 +247,7 @@ public class Graph<T> implements GraphADT<T> {
             this.adjMatrix[index1][index2] = false;
             this.adjMatrix[index1][index2] = false;
         } catch (ElementNotFoundException ex) {
+            System.out.println("Some vertex does not exist!!");
         }
     }
 
