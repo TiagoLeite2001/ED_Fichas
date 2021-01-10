@@ -8,8 +8,6 @@ package classes;
 import exceptions.ElementNotFoundException;
 import exceptions.EmptyCollectionException;
 import interfaces.GraphADT;
-import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
-
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,11 +75,7 @@ public class Graph<T> implements GraphADT<T> {
     }
 
     public boolean indexIsValid(int index) {
-        if (index < this.numVertices && index >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return (index < this.numVertices && index >= 0);
     }
 
     /**
@@ -100,7 +94,6 @@ public class Graph<T> implements GraphADT<T> {
             adjMatrix[i][numVertices] = false;
         }
         numVertices++;
-
     }
 
     protected void expandCapacity() {
@@ -256,10 +249,10 @@ public class Graph<T> implements GraphADT<T> {
     @Override
     public boolean isConnected() {
         int cont = 0;
-        for(int i=0; i<numVertices; i++){
-            for(int j=0; j<numVertices; j++){
-                if(!adjMatrix[i][j]){
-                    if(cont == numVertices){
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                if (!adjMatrix[i][j]) {
+                    if (cont == numVertices) {
                         return false;
                     }
                     cont++;
@@ -267,7 +260,6 @@ public class Graph<T> implements GraphADT<T> {
             }
         }
         return true;
-
     }
 
     @Override
@@ -281,7 +273,8 @@ public class Graph<T> implements GraphADT<T> {
         try {
             i = getIndex(startVertex);
             return iteratorBFS(i);
-        } catch (ElementNotFoundException ex) {   }
+        } catch (ElementNotFoundException ex) {
+        }
         return null;
     }
 
