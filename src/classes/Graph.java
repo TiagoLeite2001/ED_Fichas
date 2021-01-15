@@ -11,6 +11,7 @@ import interfaces.GraphADT;
 
 
 import java.util.Iterator;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,7 +70,7 @@ public class Graph<T> implements GraphADT<T> {
      * @param index1 the first index
      * @param index2 the second index
      */
-    public void addEdge(int index1, int index2) {
+    private void addEdge(int index1, int index2) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = true;
             adjMatrix[index2][index1] = true;
@@ -213,10 +214,72 @@ public class Graph<T> implements GraphADT<T> {
         return resultList.iterator();
     }
 
+    /**
+     * Returns the iterator of the shortest path
+     * @param startVertex
+     * @param targetVertex
+     */
     @Override
-    public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException {
-        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-                                                                       // Tools | Templates.
+    public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException, ElementNotFoundException {
+        Integer x;
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        ArrayUnorderedList<T> shortestPath = new ArrayUnorderedList<>();
+        int startIndex = getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+        boolean[] visited = new boolean[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+        }
+        int[] lenght = new int[numVertices];
+        int[] prev = new int[numVertices];
+        prev[startIndex]=-1;
+        lenght[startIndex]=0;
+        boolean found = false;
+
+        traversalQueue.enqueue(startIndex);
+        int prevIndex=startIndex;
+        while (!traversalQueue.isEmpty() && !found) {
+            x = traversalQueue.dequeue();
+            /**
+             * Find all vertices adjacent to x that have not been visited and queue them up
+             */
+            visited[startIndex]=true;
+            for (int i = startIndex; i < numVertices; i++) {
+                if (adjMatrix[x.intValue()][i] && !visited[i]) {
+                    lenght[i] = lenght[x.intValue()] + 1;
+                    traversalQueue.enqueue(i);
+                    visited[i] = true;
+                    prev[i] = x;
+                    if(i==targetIndex){
+                        found = true;
+                    }
+                }
+            }
+        }
+        LinkedStack<T> stack = new LinkedStack<>();
+
+        stack.push(targetVertex);
+        int p=targetIndex;
+        while(prev[p]>-1){
+            stack.push(getVertex(prev[p]));
+            p = prev[p];
+        }
+
+        while(!stack.isEmpty()){
+            shortestPath.addToRear(stack.pop());
+        }
+
+        return shortestPath.iterator();
+    }
+
+    public T getVertex(int index) throws ElementNotFoundException {
+        for(int i=0; i<numVertices;i++){
+            if(vertices[i].equals(vertices[index])){
+                return vertices[i];
+            }
+        }
+        throw new ElementNotFoundException("Não existe");
     }
 
     @Override
