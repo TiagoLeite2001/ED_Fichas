@@ -11,7 +11,7 @@ package ficha7;
  */
 public class SolveTowers {
     public static void main(String[] args) {
-        TowersOfHanoi towers = new TowersOfHanoi(20);
+        TowersOfHanoi towers = new TowersOfHanoi(200);
         towers.solve();
     }
 }
