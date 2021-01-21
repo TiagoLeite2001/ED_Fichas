@@ -28,8 +28,14 @@ public class NetworkDemo {
 
 
         try {
-            double n =net.shortestPathWeight(1,3);
-            System.out.println(n);
+            double n =net.shortestPathWeight(1,5);
+            System.out.println("1 Para 5: "+n);
+
+            double s =net.shortestPathWeight(1,3);
+            System.out.println("1 Para 3: "+s);
+
+            double n2 =net.shortestPathWeight(1,2);
+            System.out.println("1 Para 2: "+n2);
         } catch (ElementNotFoundException e) {
             e.printStackTrace();
         } catch (EmptyCollectionException e) {
