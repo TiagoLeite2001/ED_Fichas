@@ -3,6 +3,7 @@ package ficha12;
 import classes.Network;
 import exceptions.ElementNotFoundException;
 import exceptions.EmptyCollectionException;
+import java.util.Iterator;
 
 public class NetworkDemo {
     public static void main(String[] args) {
@@ -23,23 +24,37 @@ public class NetworkDemo {
             net.addEdge(4,5,20);
             net.addEdge(5,3,105);
         } catch (ElementNotFoundException e) {
-            e.printStackTrace();
         }
 
 
         try {
             double n =net.shortestPathWeight(1,5);
             System.out.println("1 Para 5: "+n);
+            
+            Iterator<Integer> it = net.iteratorShortestPath(1, 5);
+            
+            while(it.hasNext()){
+                System.out.println(it.next());
+            }
 
             double s =net.shortestPathWeight(1,3);
             System.out.println("1 Para 3: "+s);
+            
+            Iterator<Integer> it2 = net.iteratorShortestPath(1, 3);
+            
+            while(it2.hasNext()){
+                System.out.println(it2.next());
+            }
 
             double n2 =net.shortestPathWeight(1,2);
             System.out.println("1 Para 2: "+n2);
-        } catch (ElementNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCollectionException e) {
-            e.printStackTrace();
+            
+            Iterator<Integer> it3 = net.iteratorShortestPath(1, 2);
+            
+            while(it3.hasNext()){
+                System.out.println(it3.next());
+            }
+        } catch (ElementNotFoundException |  EmptyCollectionException e) {
         }
     }
 }
