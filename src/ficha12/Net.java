@@ -12,21 +12,21 @@ public class Net {
 
         Network<Integer> net = new Network<>();
 
-        Integer a = 1;
-        Integer b = 2;
-        Integer c = 3;
-        Integer d = 4;
-        Integer e = 5;
-        Integer f = 6;
-        Integer g = 7;
-        Integer h = 8;
-        Integer j = 9;
-        Integer k = 10;
-        Integer l = 11;
-        Integer m = 12;
-        Integer n = 13;
-        Integer o = 14;
-        Integer p = 15;
+        Integer a = 0;
+        Integer b = 1;
+        Integer c = 2;
+        Integer d = 3;
+        Integer e = 4;
+        Integer f = 5;
+        Integer g = 6;
+        Integer h = 7;
+        Integer j = 8;
+        Integer k = 9;
+        Integer l = 10;
+        Integer m = 11;
+        Integer n = 12;
+        Integer o = 13;
+        Integer p = 14;
 
         net.addVertex(a);
         net.addVertex(b);
@@ -65,8 +65,8 @@ public class Net {
             net.addEdge(d,l,2);
 
 
-            double nee =net.shortest(p,a);
-            System.out.println("p Para l: " + nee);
+            double nee =net.shortestPathWeight(p,b);
+            System.out.println("p Para a: " + nee);
 
         } catch (ElementNotFoundException | EmptyCollectionException er) {
             System.out.println(er);

@@ -30,8 +30,8 @@ public class NetworkDemo {
 
 
         try {
-            double n =net.shortest("D","B");
-            System.out.println("A Para B: " + n);
+            double n =net.shortestPathWeight("D","B");
+            System.out.println("D Para B: " + n);
 
 
         } catch (ElementNotFoundException |  EmptyCollectionException e) {

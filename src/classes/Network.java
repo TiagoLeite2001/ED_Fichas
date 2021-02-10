@@ -298,8 +298,7 @@ public class Network<T> implements NetworkADT<T> {
         return null;
     }
 
-    @Override
-    public double shortestPathWeight(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
+    public double shortestPathWeightAntigo(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
         LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
         Integer x;
 
@@ -401,11 +400,11 @@ public class Network<T> implements NetworkADT<T> {
         return weight;
 
     }
-
-    public double shortest(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
+    
+    @Override
+    public double shortestPathWeight(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
         LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
         Integer x;
-
         double[][] table = new double[3][numVertices];
         boolean[] visited = new boolean[numVertices];
 
@@ -424,11 +423,9 @@ public class Network<T> implements NetworkADT<T> {
             if (i != startIndex) {
                 table[1][i] = Integer.MAX_VALUE;
             }
-            table[2][i]=-1;
         }
 
         boolean done = false;
-
         traversalQueue.enqueue(startIndex);
 
         while (!traversalQueue.isEmpty() && !done) {
@@ -437,24 +434,26 @@ public class Network<T> implements NetworkADT<T> {
 
             for (int i = 0; i < numVertices; i++) {
                 if (adjMatrix[x][i] > 0 && !visited[i]) {
-                    if(table[1][i] > adjMatrix[x][i] + table[1][x] ){
+                    if (table[1][i] > adjMatrix[x][i] + table[1][x]) {
                         table[1][i] = adjMatrix[x][i] + table[1][x];
                         table[2][i] = x;
-                        NetworkNode node = new NetworkNode(i,adjMatrix[x][i]);
+                        NetworkNode node = new NetworkNode(i, adjMatrix[x][i]);
                         minHeap.addElement(node);
                     }
                 }
             }
 
-            traversalQueue.enqueue(minHeap.findMin().getIndex());
-            visited[x] = true;
-
-            if(targetIndex==x){
+            if (minHeap.isEmpty()) {
                 done = true;
+            } else {
+                traversalQueue.enqueue(minHeap.findMin().getIndex());
+                visited[x] = true;
             }
         }
-
-        return (int)table[1][targetIndex];
+        if(table[1][targetIndex] == Integer.MAX_VALUE){
+            throw new ElementNotFoundException("Não foi encontrado um caminho entre os dois vértices!");
+        }
+        return (int) table[1][targetIndex];
     }
 
     /**
@@ -463,7 +462,7 @@ public class Network<T> implements NetworkADT<T> {
      * @param startVertex
      * @param targetVertex
      */
-
+    //NAO ACABADO
     @Override
     public Iterator<T> iteratorShortestPath(T startVertex, T targetVertex) throws EmptyCollectionException, ElementNotFoundException {
         LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
