@@ -402,8 +402,62 @@ public class Network<T> implements NetworkADT<T> {
 
     }
 
+    public double shortest(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
+        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
+        Integer x;
+
+        double[][] table = new double[3][numVertices];
+        boolean[] visited = new boolean[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+        }
+
+        int startIndex = getIndex(startVertex);
+        int targetIndex = getIndex(targetVertex);
+
+        table[1][startIndex] = 0;
+        table[2][startIndex] = -1;
+
+        for (int i = 0; i < numVertices; i++) {
+            table[0][i] = i;
+            if (i != startIndex) {
+                table[1][i] = Integer.MAX_VALUE;
+            }
+            table[2][i]=-1;
+        }
+
+        boolean done = false;
+
+        traversalQueue.enqueue(startIndex);
+
+        while (!traversalQueue.isEmpty() && !done) {
+            ArrayHeap<NetworkNode> minHeap = new ArrayHeap<>();
+            x = traversalQueue.dequeue();
+
+            for (int i = 0; i < numVertices; i++) {
+                if (adjMatrix[x][i] > 0 && !visited[i]) {
+                    if(table[1][i] > adjMatrix[x][i] + table[1][x] ){
+                        table[1][i] = adjMatrix[x][i] + table[1][x];
+                        table[2][i] = x;
+                        NetworkNode node = new NetworkNode(i,adjMatrix[x][i]);
+                        minHeap.addElement(node);
+                    }
+                }
+            }
+
+            traversalQueue.enqueue(minHeap.findMin().getIndex());
+            visited[x] = true;
+
+            if(targetIndex==x){
+                done = true;
+            }
+        }
+
+        return (int)table[1][targetIndex];
+    }
+
     /**
-     * NAO USADO NUMA NETWORK
      * Returns the iterator of the shortest path
      *
      * @param startVertex
