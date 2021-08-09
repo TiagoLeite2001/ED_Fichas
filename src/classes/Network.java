@@ -297,109 +297,6 @@ public class Network<T> implements NetworkADT<T> {
         }
         return null;
     }
-
-    public double shortestPathWeightAntigo(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
-        LinkedQueue<Integer> traversalQueue = new LinkedQueue<>();
-        Integer x;
-
-        double[][] table = new double[numVertices][numVertices];
-        boolean[] visited = new boolean[numVertices];
-
-        for (int i = 0; i < numVertices; i++) {
-            visited[i] = false;
-        }
-
-        int startIndex = getIndex(startVertex);
-        int targetIndex = getIndex(targetVertex);
-
-        table[1][startIndex] = 0;
-        table[2][startIndex] = -1;
-
-        for (int i = 0; i < numVertices; i++) {
-            table[0][i] = i;
-            if (i != startIndex) {
-                table[1][i] = 1999999999;
-            }
-            table[2][i]=-1;
-        }
-
-        Double[] listaPesos = new Double[numVertices*2+1];
-        int nPesos =0;
-        boolean done = false;
-        traversalQueue.enqueue(startIndex);
-        while (!traversalQueue.isEmpty() && !done) {
-
-            x = traversalQueue.dequeue();
-            nPesos=0;
-            /**
-             * Find all vertices adjacent to x that have not been visited and queue them up
-             */
-            for (int i = 0; i < numVertices; i++) {
-                if (adjMatrix[x][i] > 0 && !visited[i]) {
-                    //calcular a distancia anterior
-                    double weightTotal = 0;
-                    int p = i;
-
-                    while (table[2][p] > -1) {
-                        weightTotal += table[1][p];
-                        int b = (int) table[2][p];
-                        p = b;
-                    }
-                    double weightParcial = weightTotal - table[1][i];
-                    if(weightParcial>0){
-                        if (adjMatrix[x][i] + weightParcial < weightTotal) {
-                            table[1][i] = adjMatrix[x][i];
-                            table[2][i] = x;
-
-                            listaPesos[nPesos*2]=adjMatrix[x][i] + weightParcial;
-                            listaPesos[(nPesos*2)+1]=(double)i;
-                            nPesos++;
-                        }
-                    }
-                    else{
-                        if (adjMatrix[x][i]<table[1][i]) {
-                            table[1][i] = adjMatrix[x][i];
-                            table[2][i] = x;
-
-                            listaPesos[(nPesos*2)]=adjMatrix[x][i];
-                            listaPesos[(nPesos*2)+1]=(double)i;
-                            nPesos++;
-                        }
-                    }
-
-                }
-            }
-
-            double menorCusto = listaPesos[0];
-            int index =listaPesos[1].intValue();
-            int k=0;
-
-            while(k<(nPesos*2)){
-                if(listaPesos[k]<menorCusto){
-                    menorCusto=listaPesos[k];
-                    index = listaPesos[k+1].intValue();
-                }
-                k = k+2;
-            }
-
-            traversalQueue.enqueue(index);
-            visited[x] = true;
-
-            if(index==x){
-                done = true;
-            }
-        }
-
-        double weight = 0;
-        int i = targetIndex;
-
-        while (table[1][i] > 0) {
-            weight += table[1][i];
-            i = (int) table[2][i];
-        }
-        return weight;
-
-    }
     
     @Override
     public double shortestPathWeight(T startVertex, T targetVertex) throws ElementNotFoundException, EmptyCollectionException {
@@ -428,7 +325,7 @@ public class Network<T> implements NetworkADT<T> {
         boolean done = false;
         traversalQueue.enqueue(startIndex);
 
-        while (!traversalQueue.isEmpty() && !done) {
+        while (!traversalQueue.isEmpty()) {
             ArrayHeap<NetworkNode> minHeap = new ArrayHeap<>();
             x = traversalQueue.dequeue();
 
@@ -440,13 +337,12 @@ public class Network<T> implements NetworkADT<T> {
                         NetworkNode node = new NetworkNode(i, adjMatrix[x][i]);
                         minHeap.addElement(node);
                     }
+                traversalQueue.enqueue(i);
                 }
+                
             }
-
             if (minHeap.isEmpty()) {
-                done = true;
             } else {
-                traversalQueue.enqueue(minHeap.findMin().getIndex());
                 visited[x] = true;
             }
         }
